@@ -23,7 +23,7 @@ class CustomTextField extends StatelessWidget {
       children: [
         Text(field),
         TextFormField(
-          controller: controller != null ? controller : null,
+          controller: controller,
           inputFormatters: [
             LengthLimitingTextInputFormatter(limit),
             FilteringTextInputFormatter.allow(regExp)

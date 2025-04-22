@@ -65,7 +65,7 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(
                 width: double.maxFinite,
-                height: 100,
+                height: 50,
                 child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -90,7 +90,7 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(
                 width: double.maxFinite,
-                height: 100,
+                height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,

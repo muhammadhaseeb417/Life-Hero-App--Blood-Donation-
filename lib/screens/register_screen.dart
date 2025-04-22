@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:life_hero_app/utils/app_routes.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../widgets/custom_text_field.dart';
 
@@ -15,14 +19,34 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   String? selectedGender;
   String? selectedBloodGroup = "A+";
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _cnicController = TextEditingController();
-  TextEditingController _provinceController = TextEditingController();
-  TextEditingController _cityController = TextEditingController();
-  String _username = "";
-  String _cnic = "";
-  String _province = "";
-  String _city = "";
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _cnicController = TextEditingController();
+  final TextEditingController _provinceController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  // String _username = "";
+  // String _cnic = "";
+  // String _province = "";
+  // String _city = "";
+
+  Future<bool> saveData(String data) async {
+    try {
+      if (kIsWeb) {
+        // Web implementation (using localStorage or IndexedDB)
+        // For simple testing, you can use print statements
+        log("Web platform detected, data would be saved: $data");
+        return true;
+      } else {
+        // Mobile implementation
+        Directory documents = await getApplicationDocumentsDirectory();
+        File f = File('${documents.path}/data.json');
+        await f.writeAsString(data);
+        return true;
+      }
+    } catch (e) {
+      log("Error writing to file: $e");
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,10 +159,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, AppRoutes.homePage);
                     log("Register Button Pressed");
-                    log("Username: ${_usernameController.text}");
-                    log("Cnic: ${_cnicController.text}");
-                    log("Province: ${_provinceController.text}");
-                    log("City: ${_cityController.text}");
+                    Map<String, String> data = {
+                      "username": _usernameController.text,
+                      "cnic": _cnicController.text,
+                      "province": _provinceController.text,
+                      "city": _cityController.text,
+                    };
+                    String jsonData = jsonEncode(data);
+                    log(jsonData);
+                    Future<bool> result = saveData(jsonData);
+                    result.then((value) {
+                      if (value) {
+                        log("Data saved successfully");
+                      } else {
+                        log("Failed to save data");
+                      }
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,

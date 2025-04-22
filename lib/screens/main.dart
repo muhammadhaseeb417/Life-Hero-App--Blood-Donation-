@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:life_hero_app/utils/app_routes.dart';
 import 'package:life_hero_app/utils/app_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

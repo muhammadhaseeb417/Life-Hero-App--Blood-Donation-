@@ -1,3 +1,4 @@
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
 class Profile extends StatelessWidget {
@@ -5,7 +6,7 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _bioController = TextEditingController();
+    TextEditingController bioController = TextEditingController();
 
     return Scaffold(
         appBar: AppBar(
@@ -43,8 +44,8 @@ class Profile extends StatelessWidget {
                     "I am a Flutter Developer, also a student at Uet Lahore"),
                 const SizedBox(height: 30),
                 TextFormField(
-                  controller: _bioController,
-                  decoration: InputDecoration(
+                  controller: bioController,
+                  decoration: const InputDecoration(
                     icon: Icon(Icons.info),
                     hintText: "something about your ...",
                     labelText: "Bio",
@@ -53,8 +54,10 @@ class Profile extends StatelessWidget {
                 const SizedBox(height: 30),
                 ElevatedButton(
                     onPressed: () {
-                      print("Bio Value :${_bioController.text}");
-                      _bioController.clear();
+                      if (kDebugMode) {
+                        print("Bio Value :${bioController.text}");
+                      }
+                      bioController.clear();
                     },
                     child: const Text("Save"))
               ],
