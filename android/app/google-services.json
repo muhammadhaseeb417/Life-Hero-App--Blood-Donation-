@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1037868001310",
+    "project_id": "life-hero-app-118e4",
+    "storage_bucket": "life-hero-app-118e4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037868001310:android:a91a0bc49a7b72b0af660f",
+        "android_client_info": {
+          "package_name": "com.example.life_hero_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDblK-gGPnb5ENAFeqmWg14eOLM_njCvrY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
