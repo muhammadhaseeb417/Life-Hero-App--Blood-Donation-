@@ -1,11 +1,16 @@
 import 'dart:developer';
 
+import 'package:firebase_core/firebase_core.dart' show Firebase;
 import 'package:firebase_database/firebase_database.dart';
 
 class FirebaseDatabaseFunc {
   // FirebaseDatabase instance
-  static final DatabaseReference db =
-      FirebaseDatabase.instance.ref("lifehero_db");
+  static final database = FirebaseDatabase.instanceFor(
+    app: Firebase.app(),
+    databaseURL: 'https://life-hero-app-118e4-default-rtdb.firebaseio.com/',
+  );
+
+  static final userRef = database.ref("lifehero_db").child("users_data");
 
   // Method to get data from the database
   void getData() {
@@ -15,7 +20,7 @@ class FirebaseDatabaseFunc {
   // Method to set data in the database
   void setData({required Map<String, dynamic> userData}) async {
     try {
-      await db.push().set(userData);
+      await userRef.push().set(userData);
       log("Data saved successfully: ${userData['email']}");
     } catch (e) {
       log("Error saving data: $e");
