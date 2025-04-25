@@ -5,8 +5,11 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:life_hero_app/utils/app_routes.dart';
+import 'package:life_hero_app/utils/user_auth.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../utils/custom_bottom_navigation_bar.dart'
+    show CustomBottomNavigationBar;
 import '../widgets/custom_text_field.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -19,7 +22,8 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   String? selectedGender;
   String? selectedBloodGroup = "A+";
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _cnicController = TextEditingController();
   final TextEditingController _provinceController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
@@ -61,11 +65,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomTextField(
-                field: "Username",
+                field: "Email",
                 iconData: const Icon(Icons.person),
-                regExp: RegExp("[A-Za-z]"),
+                regExp: RegExp(r'[a-zA-Z0-9@._-]'),
                 limit: 40,
-                controller: _usernameController,
+                controller: _emailController,
+              ),
+              CustomTextField(
+                field: "Password",
+                iconData: const Icon(Icons.person),
+                regExp: RegExp(r"[A-Za-z\d@$!%*?&]"),
+                limit: 40,
+                controller: _passwordController,
               ),
               CustomTextField(
                 field: "Cnic",
@@ -156,25 +167,49 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 width: double.maxFinite,
                 height: 60,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, AppRoutes.homePage);
-                    log("Register Button Pressed");
-                    Map<String, String> data = {
-                      "username": _usernameController.text,
+                  onPressed: () async {
+                    Map<String, dynamic> data = {
+                      "email": _emailController.text,
+                      "password": _passwordController.text,
                       "cnic": _cnicController.text,
                       "province": _provinceController.text,
                       "city": _cityController.text,
+                      "bloodgroup": selectedBloodGroup!,
+                      "gender": selectedGender, // Add this
                     };
-                    String jsonData = jsonEncode(data);
-                    log(jsonData);
-                    Future<bool> result = saveData(jsonData);
-                    result.then((value) {
-                      if (value) {
-                        log("Data saved successfully");
+                    if (_emailController.text.isEmpty ||
+                        _passwordController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please fill all fields'),
+                        ),
+                      );
+                      return;
+                    } else {
+                      final result = await UserAuth.signup(userData: data);
+                      if (result == true) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const CustomBottomNavigationBar(
+                                  currentIndex: 0);
+                            },
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Login successful'),
+                          ),
+                        );
                       } else {
-                        log("Failed to save data");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Login failed'),
+                          ),
+                        );
                       }
-                    });
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,

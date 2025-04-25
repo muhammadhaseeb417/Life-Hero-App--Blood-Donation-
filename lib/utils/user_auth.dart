@@ -1,14 +1,23 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:life_hero_app/utils/firebase_database_func.dart';
 
 class UserAuth {
   static final firebaseInstance = FirebaseAuth.instance;
 
-  static signup(String email, String password) async {
+  static Future<bool> signup({
+    required Map<String, dynamic> userData,
+  }) async {
     try {
-      await firebaseInstance.createUserWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential userCred =
+          await firebaseInstance.createUserWithEmailAndPassword(
+              email: userData["email"], password: userData["password"]);
+
+      final userId = userCred.user?.uid;
+      final userIdToken = userCred.user?.getIdToken();
+      userData["userId"] = userId;
+      FirebaseDatabaseFunc().setData(userData: userData);
       return true;
     } catch (e) {
       if (e is FirebaseAuthException) {

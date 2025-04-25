@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:life_hero_app/utils/app_routes.dart';
 import 'package:life_hero_app/utils/custom_bottom_navigation_bar.dart';
+import 'package:life_hero_app/utils/user_auth.dart';
 import 'package:life_hero_app/widgets/custom_text_field.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -8,6 +9,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _emailController = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -36,10 +40,11 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Expanded(
                       child: CustomTextField(
-                    field: "Username",
+                    field: "Email",
                     iconData: const Icon(Icons.person),
-                    regExp: RegExp(r"^[A-Za-z]+$"),
+                    regExp: RegExp(r'[a-zA-Z0-9@._-]'),
                     limit: 40,
+                    controller: _emailController,
                   )),
                 ],
               ),
@@ -51,6 +56,7 @@ class LoginScreen extends StatelessWidget {
                     iconData: const Icon(Icons.person),
                     regExp: RegExp(r"[A-Za-z\d@$!%*?&]"),
                     limit: 40,
+                    controller: _passwordController,
                   )),
                 ],
               ),
@@ -58,17 +64,7 @@ class LoginScreen extends StatelessWidget {
                 width: double.maxFinite,
                 height: 50,
                 child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const CustomBottomNavigationBar(
-                                currentIndex: 0);
-                          },
-                        ),
-                      );
-                    },
+                    onPressed: () async {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       foregroundColor: Colors.white,
