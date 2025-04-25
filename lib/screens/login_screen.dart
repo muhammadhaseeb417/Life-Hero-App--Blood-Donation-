@@ -21,7 +21,8 @@ class LoginScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            spacing: 30,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const Text(
                 'Login',
@@ -33,11 +34,6 @@ class LoginScreen extends StatelessWidget {
               ),
               Row(
                 children: [
-                  const Text(
-                    'Username',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
-                  ),
-                  const SizedBox(width: 20),
                   Expanded(
                       child: CustomTextField(
                     field: "Username",
@@ -49,11 +45,6 @@ class LoginScreen extends StatelessWidget {
               ),
               Row(
                 children: [
-                  const Text(
-                    'Password',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
-                  ),
-                  const SizedBox(width: 20),
                   Expanded(
                       child: CustomTextField(
                     field: "Password",
